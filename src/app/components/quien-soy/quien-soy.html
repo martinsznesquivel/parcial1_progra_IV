@@ -1,14 +1,48 @@
-@if (datosGithub) {
+<div class="container-perfil py-5">
+  @if (datosGithub) {
     <div class="perfil">
-        <img [src]="datosGithub.avatar_url">
-        <h1>{{ datosGithub.name }}</h1>
-        <p>id: {{ datosGithub.id }}</p>
-        <p class="descripcion">{{ datosGithub.bio }}</p>
+      <div class="carta-presentacion text-center p-4">
+        <img
+          [src]="datosGithub.avatar_url"
+          class="rounded-circle border border-warning mb-3"
+          style="width: 150px"
+          alt="foto de perfil"
+        />
+        <h2 class="nombre text-warning">{{ datosGithub.name }}</h2>
+        <p class="descripcion fs-5">{{ datosGithub.bio }}</p>
+      </div>
     </div>
-} @else {
+  } @else {
     <p>Cargando datos</p>
-}
-<div class="info-juego">
-    <h3>Stars Invaders:</h3>
-    <p>Juego inspirado en Space Invaders, en esta ocasión tematizado de Star wars. El juego se juega con las flechas y los botones del mouse. Las flechas sirven para moverte y los botones para disparar y utilizar una habilidad especial</p>
+  }
+  <div class="info-juego bg-transparent border-warning shadow-lg mt-4">
+    <div class="card-header border-warning text-center">
+      <h3 class="text-warning mb-0">Stars Invaders</h3>
+    </div>
+
+    <div class="card-body text-white">
+      <p class="card-text text-center fs-5">
+        Inspirado en el clásico de Space Invaders, pero con un toque de Star Wars
+      </p>
+
+      <hr class="border-warning" />
+
+      <div class="controles-juego row text-center">
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">MOVIMIENTO</p>
+          <p>Flechas</p>
+        </div>
+
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">DISPARO</p>
+          <p>Click izquierdo</p>
+        </div>
+
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">HABILIDAD ESPECIAL</p>
+          <p>Click derecho</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
