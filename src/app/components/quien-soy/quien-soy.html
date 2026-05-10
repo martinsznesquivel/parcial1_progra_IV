@@ -1,15 +1,15 @@
 <div class="container-perfil py-5">
-  @if (datosGithub) {
+  @if (githubService.usuarioGithub(); as datos) {
     <div class="perfil">
       <div class="carta-presentacion text-center p-4">
         <img
-          [src]="datosGithub.avatar_url"
+          [src]="datos.avatar_url"
           class="rounded-circle border border-warning mb-3"
           style="width: 150px"
           alt="foto de perfil"
         />
-        <h2 class="nombre text-warning">{{ datosGithub.name }}</h2>
-        <p class="descripcion fs-5">{{ datosGithub.bio }}</p>
+        <h2 class="nombre text-warning">{{ datos.name }}</h2>
+        <p class="descripcion fs-5">{{ datos.bio }}</p>
       </div>
     </div>
   } @else {
