@@ -1,5 +1,5 @@
 <!-- Angular tiene el event preventdefault, evita recargar la pagina al mandar un formulario y valida que no haya errores -->
-<form [formGroup]="formulario" (ngSubmit)="mostrar()">
+<form [formGroup]="formulario" (ngSubmit)="accion()">
   <div>
     <label for="nombre">Nombre</label>
     <input
@@ -84,12 +84,12 @@
     />
     @if (formulario.get('password')?.errors && formulario.get('password')?.touched) {
       @if (formulario.get('password')?.hasError('required')) {
-        <small class="small-error">La contrseña es obligatoria</small>
+        <small class="small-error">La contraseña es obligatoria</small>
       }
       @if (formulario.get('password')?.getError('minlength'); as MIN) {
         <small class="small-error">Mínimo {{ MIN.requiredLength }} caracteres</small>
       }
     }
   </div>
-  <button type="submit">Registrarse</button>
+  <button [disabled]="!formulario.valid">Registrarse</button>
 </form>
