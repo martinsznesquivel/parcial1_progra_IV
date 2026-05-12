@@ -1,1 +1,95 @@
-<p>registro works!</p>
+<!-- Angular tiene el event preventdefault, evita recargar la pagina al mandar un formulario y valida que no haya errores -->
+<form [formGroup]="formulario" (ngSubmit)="mostrar()">
+  <div>
+    <label for="nombre">Nombre</label>
+    <input
+      name="nombre"
+      formControlName="nombre"
+      [class.error]="formulario.get('nombre')?.errors !== null ? 'error' : ''"
+    />
+    <!-- touched detecta si un elemento fue clickeado. Sin esto apenas cargue la página se muestran mensajes de validacion que pueden ser molestos si no toqué nada -->
+    @if (formulario.get('nombre')?.errors && formulario.get('nombre')?.touched) {
+      @if (formulario.get('nombre')?.getError('maxlength'); as MAXLENGTH) {
+        <small class="small-error">El largo máximo es de {{ MAXLENGTH.requiredLength }}</small>
+      }
+
+      @if (formulario.get('nombre')?.getError('minlength'); as MINLENGTH) {
+        <small class="small-error">El largo minimo es de {{ MINLENGTH.requiredLength }}</small>
+      }
+
+      @if (formulario.get('nombre')?.hasError('required')) {
+        <small class="small-error">El nombre es obligatorio</small>
+      }
+    }
+  </div>
+
+  <div>
+    <label for="apellido">Apellido</label>
+    <input
+      name="apellido"
+      formControlName="apellido"
+      [class.error]="formulario.get('apellido')?.invalid && formulario.get('apellido')?.touched"
+    />
+    @if (formulario.get('apellido')?.errors && formulario.get('apellido')?.touched) {
+      <small class="small-error">El apellido es obligatorio</small>
+    }
+  </div>
+
+  <div>
+    <label for="edad">Edad</label>
+    <input
+      name="edad"
+      type="number"
+      formControlName="edad"
+      [class.error]="formulario.get('edad')?.invalid && formulario.get('edad')?.touched"
+    />
+    @if (formulario.get('edad')?.errors && formulario.get('edad')?.touched) {
+      @if (formulario.get('edad')?.hasError('required')) {
+        <small class="small-error">La edad es obligatoria</small>
+      }
+      @if (formulario.get('edad')?.hasError('min')) {
+        <small class="small-error">Debes ser mayor de 18 años</small>
+      }
+      @if (formulario.get('edad')?.getError('max'); as MAX) {
+        <small class="small-error">La edad máxima permitida es {{ MAX.max }}.</small>
+      }
+    }
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input
+      name="email"
+      type="email"
+      formControlName="email"
+      [class.error]="formulario.get('email')?.invalid && formulario.get('email')?.touched"
+    />
+    @if (formulario.get('email')?.errors && formulario.get('email')?.touched) {
+      @if (formulario.get('email')?.hasError('required')) {
+        <small class="small-error">El Email es obligatorio</small>
+      }
+      @if (formulario.get('email')?.hasError('email')) {
+        <small class="small-error">Formato de email inválido</small>
+      }
+    }
+  </div>
+
+  <div>
+    <label for="password">Contraseña</label>
+    <input
+      name="password"
+      type="password"
+      formControlName="password"
+      [class.error]="formulario.get('password')?.invalid && formulario.get('password')?.touched"
+    />
+    @if (formulario.get('password')?.errors && formulario.get('password')?.touched) {
+      @if (formulario.get('password')?.hasError('required')) {
+        <small class="small-error">La contrseña es obligatoria</small>
+      }
+      @if (formulario.get('password')?.getError('minlength'); as MIN) {
+        <small class="small-error">Mínimo {{ MIN.requiredLength }} caracteres</small>
+      }
+    }
+  </div>
+  <button type="submit">Registrarse</button>
+</form>
