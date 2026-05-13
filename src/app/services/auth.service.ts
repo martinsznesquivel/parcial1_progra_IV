@@ -47,18 +47,18 @@ export class AuthService {
 
     if (response.error) {
       console.log(response.error);
+      return;
     }
-    {
       console.log(response.data);
       this.usuarioActual.set(response.data.user);
-      this.router.navigateByUrl('/home')
-    }
+      this.router.navigateByUrl('/bienvenida')
   }
 
   router = inject(Router)
 
   cerrarSesion() {
     this.supabase.auth.signOut();
+    this.usuarioActual.set(null);
     this.router.navigateByUrl('/login')
   }
 }

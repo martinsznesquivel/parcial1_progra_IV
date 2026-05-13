@@ -13,19 +13,23 @@
           >BIENVENIDA</a
         >
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-light"
-           routerLink="/login"
-           routerLinkActive="text-warning fw-bold"
-          >LOGIN</a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light"
-           routerLink="/registro"
-           routerLinkActive="text-warning fw-bold"
-           >REGISTRO</a>
-      </li>
+
+      @if (!authService.usuarioActual()) {
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/login" routerLinkActive="text-warning fw-bold"
+            >LOGIN</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link text-light"
+            routerLink="/registro"
+            routerLinkActive="text-warning fw-bold"
+            >REGISTRO</a
+          >
+        </li>
+      }
+
       <li class="nav-item">
         <a
           class="nav-link text-light"
@@ -34,6 +38,17 @@
           >¿QUIEN SOY?</a
         >
       </li>
+      @if (authService.usuarioActual()) {
+        <li class="nav-item d-flex align-items-center">
+          <span class="text-warning me-3 fw-bold">
+            {{ authService.usuarioActual()?.email }}
+          </span>
+
+          <button (click)="cerrarSesion()" class="btn btn-outline-danger btn-sm">
+            Cerrar sesión
+          </button>
+        </li>
+      }
     </ul>
   </div>
 </nav>
