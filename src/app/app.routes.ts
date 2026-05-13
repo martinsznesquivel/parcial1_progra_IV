@@ -3,11 +3,17 @@ import { Bienvenida } from './components/bienvenida/bienvenida';
 import { Login } from './components/login/login';
 import { QuienSoy } from './components/quien-soy/quien-soy';
 import { Registro } from './components/registro/registro';
+import { logueadoGuard } from './guards/logueado-guard';
 
 export const routes: Routes = [
     {path: 'bienvenida', component: Bienvenida},
-    {path: 'login', component:Login},
-    {path: 'registro', component:Registro},
+
+    {path: 'login', component:Login, canActivate: [logueadoGuard]},
+    {path: 'registro', component:Registro, canActivate: [logueadoGuard]},
+    
     {path: 'quien-soy', component:QuienSoy},
-    {path: '', redirectTo: '/bienvenida', pathMatch: 'full'}
+
+    // auth guard lo usaría cuando empiece con el chat y los juegos
+
+    {path: '**', redirectTo: '/bienvenida', pathMatch: 'full'}
 ];
