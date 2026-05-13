@@ -1,47 +1,64 @@
-import { Injectable, OnInit } from "@angular/core";
-import { createClient, SupabaseClient, AuthResponse } from "@supabase/supabase-js";
-import { ILogin, IRegistro } from "../interfaces/auth.interfaces";
+import { inject, Injectable, OnInit, signal } from '@angular/core';
+import { createClient, SupabaseClient, AuthResponse, User, UserResponse } from '@supabase/supabase-js';
+import { ILogin, IRegistro } from '../interfaces/auth.interfaces';
+import { Router } from '@angular/router';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
-
 export class AuthService {
+  supabaseUrl = 'https://quhhjhyizyhapaqalhub.supabase.co';
 
-    supabaseUrl = 'https://quhhjhyizyhapaqalhub.supabase.co'
-    
-    publishableKey = 'sb_publishable_jlll8u8H3sIR2DAP1lOaSg_Nd1ZNBmJ'
-    
-    supabase: SupabaseClient<any, 'public', 'public', any, any>;
-    
-    usuarioActual: any;
-    
-    constructor() {
-        this.supabase = createClient(this.supabaseUrl, this.publishableKey)
-        
-    }
+  publishableKey = 'sb_publishable_jlll8u8H3sIR2DAP1lOaSg_Nd1ZNBmJ';
 
-    async registrar(datos : IRegistro) : Promise<void>{
-        const response: AuthResponse = await this.supabase?.auth.signUp({
-            email: datos.email,
-            password: datos.password,
-            options: {
-                data: {
-                    nombre: datos.nombre,
-                },
-            },
-        });
+  supabase: SupabaseClient<any, 'public', 'public', any, any>;
 
-        if (response.error) {
+  usuarioActual  = signal<User | null>(null);
+
+  constructor() {
+    this.supabase = createClient(this.supabaseUrl, this.publishableKey);
+
+    this.supabase.auth.getUser().then((response: UserResponse) => {
+        if(response.error){
             console.log(response.error);
+        } else {
+            this.usuarioActual.set(response.data.user);
         }
-        {
-            console.log(response.data)
-        }
+    });
+  }
+
+  async registrar(datos: IRegistro): Promise<void> {
+    const response: AuthResponse = await this.supabase?.auth.signUp({
+      email: datos.email,
+      password: datos.password,
+      options: {
+        data: {
+          nombre: datos.nombre,
+        },
+      },
+    });
+  }
+
+  async login({ email, password }: ILogin): Promise<void> {
+    const response: AuthResponse = await this.supabase?.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (response.error) {
+      console.log(response.error);
     }
-
-        login({ email, password } : ILogin){
-
+    {
+      console.log(response.data);
+      this.usuarioActual.set(response.data.user);
+      this.router.navigateByUrl('/home')
     }
+  }
 
+  router = inject(Router)
+
+  cerrarSesion() {
+    this.supabase.auth.signOut();
+    this.router.navigateByUrl('/login')
+  }
 }
