@@ -18,11 +18,11 @@ export class AuthService {
   constructor() {
     this.supabase = createClient(this.supabaseUrl, this.publishableKey);
 
-    this.supabase.auth.getUser().then((response: UserResponse) => {
-        if(response.error){
-            console.log(response.error);
+    this.supabase.auth.onAuthStateChange((event, session) => {
+        if(session?.user){
+            this.usuarioActual.set(session.user);
         } else {
-            this.usuarioActual.set(response.data.user);
+            this.usuarioActual.set(null);
         }
     });
   }
