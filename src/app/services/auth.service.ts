@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async registrar(datos: IRegistro): Promise<void> {
-    const response: AuthResponse = await this.supabase?.auth.signUp({
+    const { data, error } = await this.supabase?.auth.signUp({
       email: datos.email,
       password: datos.password,
       options: {
@@ -37,20 +37,22 @@ export class AuthService {
         },
       },
     });
+
+    if(error){
+      throw error;
+    }
   }
 
   async login({ email, password }: ILogin): Promise<void> {
-    const response: AuthResponse = await this.supabase?.auth.signInWithPassword({
+    const { data, error } = await this.supabase?.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
-    if (response.error) {
-      console.log(response.error);
-      return;
+    if (error) {
+      throw error;
     }
-      console.log(response.data);
-      this.usuarioActual.set(response.data.user);
+      this.usuarioActual.set(data.user);
       this.router.navigateByUrl('/bienvenida')
   }
 

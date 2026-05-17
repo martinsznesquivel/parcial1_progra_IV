@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { IRegistro } from '../../interfaces/auth.interfaces';
+import { Router } from '@angular/router';
+import { Modal } from '../../services/modal';
 
 @Component({
   selector: 'app-registro',
@@ -11,6 +13,8 @@ import { IRegistro } from '../../interfaces/auth.interfaces';
 })
 export class Registro {
   authService = inject(AuthService);
+  router = inject(Router);
+  modalService = inject(Modal);
 
   formulario = new FormGroup({
     // FormGroup para mayor escalabilidad, no itera individualmente variables sueltas, si no al objeto que contiene a todas
@@ -23,12 +27,24 @@ export class Registro {
     edad: new FormControl('', [Validators.required, Validators.min(18), Validators.max(99)]),
   });
 
-  accion() {
+  async accion() {
     if (this.formulario.invalid) return;
 
-    this.formulario.value;
-    
-    this.authService.registrar(this.formulario.value as IRegistro);
+    try {
+      await this.authService.registrar(this.formulario.value as IRegistro);
+      this.router.navigate(['/bienvenida']);
+    } catch (error: any) {
+      console.error('Error capturando el componente: ', error);
+
+      if (error.status === 422 || error.message?.includes('already registered')) {
+        this.modalService.mostrarError(
+          'Usuario ya registrado',
+          'El correo electronico ya está en uso',
+        );
+      } else {
+        this.modalService.mostrarError('Error de registro', 'Ocurrio un error inesperado');
+      }
+    }
   }
 
   // prueba en consola
