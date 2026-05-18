@@ -1,32 +1,77 @@
-<div class="login-container">
-    <h2>Iniciar sesión</h2>
-
+<div class="d-flex justify-content-center align-items-center min-vh-100 px-3">
+  <div
+    class="card bg-black text-light border border-warning shadow-lg p-4"
+    style="width: 100%; max-width: 420px; transform: translateY(-35%);"
+  >
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 2px;">
+        Iniciar sesión
+      </h2>
+      <small class="fw-bold text-uppercase" style="letter-spacing: 1px">Ingresa tus datos</small>
+    </div>
     <form [formGroup]="formulario" (ngSubmit)="accion()">
+      <div class="mb-3">
+        <label
+          for="email"
+          class="form-label text-uppercase fw-semibold small text-warning"
+          style="letter-spacing: 1px"
+          >Email</label
+        >
+        <input type="email" id="email" formControlName="email" class="form-control bg-white text-dark border-0" placeholder="ejemplo@correo.com" />
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                formControlName="email"
-                placeholder="ejemplo@correo.com">
+        @if (formulario.get('email')?.errors && formulario.get('email')?.touched) {
+          @if (formulario.get('email')?.hasError('required')){
+          <small
+            class="text-danger d-block mt-1 fw-bold text-uppercase small"
+            style="font-size: 0.75"
+          >
+            El email es obligatorio
+          </small>
+        }
+        @if (formulario.get('email')?.hasError('email')) {
+          <small
+            class="text-danger d-block mt-1 fw-bold text-uppercase small"
+            style="font-size: 0.75"
+          >
+            El formato no es válido
+          </small>
+        }
+      }
+      </div>
 
-                @if(formulario.get('email')?.errors?.['required']) { <small> El email es obligatorio </small>}
-                @if(formulario.get('email')?.errors?.['email']) { <small> El formato no es válido </small> }
-        </div>
+      <div class="mb-4">
+        <label
+          for="password"
+          class="form-label text-uppercase fw-semibold small text-warning"
+          style="letter-spacing: 1px"
+          >Contraseña</label
+        >
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control bg-white text-dark border-0"
+          placeholder="tu contraseña"
+        />
 
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input
-                type="password"
-                id="password"
-                formControlName="password"
-                placeholder="tu contraseña">
+        @if (formulario.get('password')?.invalid && formulario.get('password')?.touched) {
+          <small
+            class="text-danger d-block mt-1 fw-bold text-uppercase small"
+            style="font-size: 0.75"
+          >
+            La contraseña es obligatoria
+          </small>
+        }
+      </div>
 
-                @if (formulario.get('password')?.invalid && formulario.get('password')?.touched) { <small> La contraseña es obligatoria </small> }
-
-        </div>
-
-        <button type="submit" [disabled]="formulario.invalid">Ingresar</button>
+      <button
+        type="submit"
+        [disabled]="formulario.invalid"
+        class="btn btn-outline-warning w-100 fw-bold text-uppercase py-2"
+        style="letter-spacing: 2px"
+      >
+        Ingresar
+      </button>
     </form>
+  </div>
 </div>

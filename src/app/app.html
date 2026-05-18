@@ -56,19 +56,21 @@
 <main>
   <router-outlet></router-outlet>
 </main>
+
   @if (modalService.mostrar()) {
     <div class="modal show" style="display: block; background: rgba(0, 0, 0, 0.6);" tabindex="-1" >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ modalService.titulo() }}</h5>
-            <button type="button" (click)="modalService.cerrar()"></button>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-danger border border-danger shadow-lg">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title fw-bold text-uppercase" style="letter-spacing: 2px;">{{ modalService.titulo() }}</h5>
+            <button type="button" class="btn-close btn-close-white" (click)="modalService.cerrar()"></button>
           </div>
-          <div class="modal-body">
-            <p>{{ modalService.mensaje() }}</p>
+          <div class="modal-body text-light">
+            <p class="mb-0">{{ modalService.mensaje() }}</p>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="modalService.cerrar()"></button>
+
+          <div class="modal-footer border-top-0">
+            <button type="button" class="btn btn-outline-danger w-100 fw-bold text-uppercase" (click)="modalService.cerrar()">Cerrar</button>
           </div>
         </div>
       </div>
