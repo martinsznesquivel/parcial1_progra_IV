@@ -1,0 +1,48 @@
+<div class="container-perfil py-5">
+  @if (githubService.usuarioGithub(); as datos) {
+    <div class="perfil">
+      <div class="carta-presentacion text-center p-4">
+        <img
+          [src]="datos.avatar_url"
+          class="rounded-circle border border-warning mb-3"
+          style="width: 150px"
+          alt="foto de perfil"
+        />
+        <h2 class="nombre text-warning">{{ datos.name }}</h2>
+        <p class="descripcion fs-5">{{ datos.bio }}</p>
+      </div>
+    </div>
+  } @else {
+    <p>Cargando datos</p>
+  }
+  <div class="info-juego bg-transparent border-warning shadow-lg mt-4">
+    <div class="card-header border-warning text-center">
+      <h3 class="text-warning mb-0">Stars Invaders</h3>
+    </div>
+
+    <div class="card-body text-white">
+      <p class="card-text text-center fs-5">
+        Inspirado en el clásico de Space Invaders, pero con un toque de Star Wars
+      </p>
+
+      <hr class="border-warning" />
+
+      <div class="controles-juego row text-center">
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">MOVIMIENTO</p>
+          <p>Flechas</p>
+        </div>
+
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">DISPARO</p>
+          <p>Click izquierdo</p>
+        </div>
+
+        <div class="col-4">
+          <p class="text-warning fw-bold mb-1">HABILIDAD ESPECIAL</p>
+          <p>Click derecho</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

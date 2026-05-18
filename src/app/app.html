@@ -1,0 +1,43 @@
+<nav class="nav-principal border-bottom border-warning bg-dark p-3">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-logo text-warning text-decoration-none fw-bold fs-4" routerLink="/bienvenida">
+      Star Arcade
+    </a>
+
+    <ul class="nav mb-0">
+      <li class="nav-item">
+        <a
+          class="nav-link text-light"
+          routerLink="/bienvenida"
+          routerLinkActive="text-warning fw-bold"
+          >BIENVENIDA</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light"
+           routerLink="/login"
+           routerLinkActive="text-warning fw-bold"
+          >LOGIN</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light"
+           routerLink="/registro"
+           routerLinkActive="text-warning fw-bold"
+           >REGISTRO</a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link text-light"
+          routerLink="/quien-soy"
+          routerLinkActive="text-warning fw-bold"
+          >¿QUIEN SOY?</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
