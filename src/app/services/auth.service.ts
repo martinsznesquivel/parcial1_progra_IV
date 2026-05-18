@@ -2,21 +2,20 @@ import { inject, Injectable, OnInit, signal } from '@angular/core';
 import { createClient, SupabaseClient, AuthResponse, User, UserResponse } from '@supabase/supabase-js';
 import { ILogin, IRegistro } from '../interfaces/auth.interfaces';
 import { Router } from '@angular/router';
+import { SupabaseService } from './supabase';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  supabaseUrl = 'https://quhhjhyizyhapaqalhub.supabase.co';
+  ;
 
-  publishableKey = 'sb_publishable_jlll8u8H3sIR2DAP1lOaSg_Nd1ZNBmJ';
-
-  supabase: SupabaseClient<any, 'public', 'public', any, any>;
+  private supabaseService = inject(SupabaseService);
+  public supabase : SupabaseClient = this.supabaseService.getClient();
 
   usuarioActual  = signal<User | null>(null);
 
   constructor() {
-    this.supabase = createClient(this.supabaseUrl, this.publishableKey);
 
     this.supabase.auth.onAuthStateChange((event, session) => {
         if(session?.user){
