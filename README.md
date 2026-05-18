@@ -9,8 +9,8 @@
 
 ## Tecnologías utilizadas:
 - **Frontend:** Angular.
-- **Estilos:** Bootstrap
-- **APIs externas:** GitHub API (Para la sección "Quien soy"
+- **Estilos:** Bootstrap.
+- **APIs externas:** GitHub API (Para la sección "Quien soy").
 - **Hosting / deploy:** Vercel.
 
 ---
