@@ -1,66 +1,87 @@
 <div class="container text-center mt-5">
-    <header class="mb-5">
-        <h1 class="display-4 fw-bold text-light">STAR ARCADE</h1>
-    </header>
+  <header class="mb-5">
+    <h1 class="display-4 fw-bold text-light">STAR ARCADE</h1>
+  </header>
 
-    @if (estaLogueado()) {
-        <div class="bienvenida-usuario mb-4 animate__animated animate__fadein">
-            <h2 class="fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 2px;">Que la fuerza te acompañe, {{ nombreUsuario() }}</h2>
-        </div>
-
-        <div class="row justify-content-center g-4 mt-2">
-            
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 bg-dark text-light border-secondary">
-                    <img src="/juegos/ahorcado.jpg" alt="">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title">Ahorcado</h5>
-                        <p>Adivina la palabra</p>
-                        <a routerLink="/" class="btn btn-outline-warning w-100">Jugar</a>
-                </div>
-            </div>
-        </div>
-                
-        <div class="col-12 col-md-6 col-lg-3">
-            <div class="card h-100 bg-dark text-light border-secondary">
-                <img src="/juegos/mayoromenor.jpeg" alt="">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h5 class="card-title">Mayor o Menor</h5>
-                    <p>¿Sabrás que personaje tiene mas o menos midiclorianos?</p>
-                    <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3">
-            <div class="card h-100 bg-dark text-light border-secondary">
-                <img src="/juegos/preguntados.jpg" alt="">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h5 class="card-title">Preguntados</h5>
-                    <p>¿Cuanto sabés de Star Wars?</p>
-                    <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3">
-            <div class="card h-100 bg-dark text-light border-secondary">
-                <img src="/juegos/starinvaders.png" alt="">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h5 class="card-title">Stars Invaders</h5>
-                    <p>Defendé a la galaxia del Imperio Galactico</p>
-                    <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
-                    </div>        
-                </div>
-            </div>
-        </div>
-} @else {
-    <div class="auth-actions p-5 bg-dark rounded border border-secondary my-5">
-        <h3 class="text-light mb-4">Inicia sesión o registrate</h3>
-        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <a routerLink="/login" class="btn btn-outline-warning btn-lg px-4 gap-3">Iniciar sesión</a>
-            <a routerLink="/registro" class="btn btn-outline-warning btn-lg px-4">Registrarse</a>
-        </div>
+  @if (estaLogueado()) {
+    <div class="bienvenida-usuario mb-4">
+      <h2 class="fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 2px">
+        Que la fuerza te acompañe, {{ nombreUsuario() }}
+      </h2>
     </div>
-}
+    
+  } @else {
+    <div class="auth-actions p-4 bg-dark rounded border border-secondary my-4 mx-auto" style="max-width: 480px;">
+    <h4 class="text-danger mb-4 fw-bold">¡ALTO AHI! ACCESO RESTRINGUIDO A LAS MISIONES</h4>
+      <h3 class="text-light mb-4">Inicia sesión o registrate</h3>
+      <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+        <a routerLink="/login" class="btn btn-outline-warning btn-lg px-4 gap-3">Iniciar sesión</a>
+        <a routerLink="/registro" class="btn btn-outline-warning btn-lg px-4">Registrarse</a>
+      </div>
+    </div>
+  }
+
+  <div class="row justify-content-center g-4 mt-2">
+    
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 bg-dark text-light border-secondary" [class.opacity-50]="!estaLogueado()">
+        <img src="/juegos/ahorcado.jpg" alt="" />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title">Ahorcado</h5>
+          <p>Adivina la palabra</p>
+          @if (estaLogueado()){
+              <a routerLink="/" class="btn btn-outline-warning w-100">Jugar</a>
+        } @else {
+              <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 bg-dark text-light border-secondary" [class.opacity-50]="!estaLogueado()">
+        <img src="/juegos/mayoromenor.jpeg" alt="" />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title">Mayor o Menor</h5>
+          <p>¿Sabrás que personaje tiene mas o menos midiclorianos?</p>
+          @if (estaLogueado()) {
+          <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
+          } @else {
+            <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 bg-dark text-light border-secondary" [class.opacity-50]="!estaLogueado()">
+        <img src="/juegos/preguntados.jpg" alt="" />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title">Preguntados</h5>
+          <p>¿Cuanto sabés de Star Wars?</p>
+          @if (estaLogueado()) {
+          <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
+          } @else {
+            <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 bg-dark text-light border-secondary" [class.opacity-50]="!estaLogueado()"> 
+        <img src="/juegos/starinvaders.png" alt="" />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title">Stars Invaders</h5>
+          <p>Defendé a la galaxia del Imperio Galactico</p>
+          @if (estaLogueado()) {
+          <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
+          } @else {
+            <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
