@@ -38,4 +38,20 @@ export class Login {
       }
     }
   }
+  
+  async loginRapido(opciones: 'Yoda' | 'Kenobi' | 'Vader'){
+    const usuarios = {
+      Yoda: {email: 'admin@admin.com', password: 'admin123'},
+      Kenobi: {email: 'test1@test.com', password: 'test1234'},
+      Vader: {email: 'test2@test.com', password: 'test1234'},
+    };
+
+    this.formulario.patchValue({
+      email: usuarios[opciones].email,
+      password: usuarios[opciones].password
+    });
+
+    await this.accion()
+    
+  }
 }

@@ -73,5 +73,22 @@
         Ingresar
       </button>
     </form>
+
+    <hr class="border-secondary m4">
+
+    <div class="text-center">
+      <p class="text-warning fw-bold mb-3" style="letter-spacing: 1px;">Ingreso rápido</p>
+      <div class="d-flex gap-2 justify-content-center">
+        <button type="button" (click)="loginRapido('Yoda')" class="btn btn-sm btn-outline-success flex-grow-1 fw-bold text-uppercase">
+          <img src="/avatares/yoda.jpg" alt="admin" class="rounded-circle border-success" style="width: 24px; height: 24px; object-fit: cover;">
+          Yoda</button>
+        <button type="button" (click)="loginRapido('Kenobi')" class="btn btn-sm btn-outline-info flex-grow-1 fw-bold text-uppercase">
+          <img src="/avatares/kenobi.jpg" alt="admin" class="rounded-circle border-info" style="width: 24px; height: 24px; object-fit: cover;">
+          Kenobi</button>
+        <button type="button" (click)="loginRapido('Vader')" class="btn btn-sm btn-outline-danger flex-grow-1 fw-bold text-uppercase">
+          <img src="/avatares/vader.jpg" alt="admin" class="rounded-circle border-warning" style="width: 24px; height: 24px; object-fit: cover;">
+          Vader</button>
+      </div>
+    </div>
   </div>
 </div>
