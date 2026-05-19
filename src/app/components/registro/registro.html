@@ -1,1 +1,128 @@
-<p>registro works!</p>
+<!-- Angular tiene el event preventdefault, evita recargar la pagina al mandar un formulario y valida que no haya errores -->
+<div class="d-flex justify-content-center align-items-start min-vh-100 px-3 py-5">
+  <div class="card bg-black text-light border border-warning shadow-lg p-4 mt-5" style="width: 100%; max-width: 420px;">
+
+<div class="text-center mb-4">
+  <h2 class="fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 2px">
+    Crear cuenta
+  </h2>
+  <small class="fw-bold text-uppercase" style="letter-spacing: 1px;">Registrate</small>
+</div>
+<form [formGroup]="formulario" (ngSubmit)="accion()">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+    <label for="nombre" class="form-label text-uppercase fw-semibold small text-warning" style="letter-spacing: 1px;">Nombre</label>
+    <input
+      name="nombre"
+      formControlName="nombre"
+      class="form-control bg-white text-dark border-0 fw-medium"
+      [class.is-invalid]="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched"
+      />
+      <!-- touched detecta si un elemento fue clickeado. Sin esto apenas cargue la página se muestran mensajes de validacion que pueden ser molestos si no toqué nada -->
+    @if (formulario.get('nombre')?.errors && formulario.get('nombre')?.touched) {
+      <div class="text-danger d-block mt-1 fw-bold text-uppercase" style="font-size: 0.75">
+      @if (formulario.get('nombre')?.getError('maxlength'); as MAXLENGTH) {
+        <span>El largo máximo es de {{ MAXLENGTH.requiredLength }}</span>
+      }
+
+      @if (formulario.get('nombre')?.getError('minlength'); as MINLENGTH) {
+        <span>El largo minimo es de {{ MINLENGTH.requiredLength }}</span>
+      }
+
+      @if (formulario.get('nombre')?.hasError('required')) {
+        <span>El nombre es obligatorio</span>
+      }
+      </div>
+    }
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <label for="apellido" class="form-label text-uppercase fw-semibold small text-warning" style="letter-spacing: 1px;">Apellido</label>
+    <input
+      name="apellido"
+      formControlName="apellido"
+      [class.is-invalid]="formulario.get('apellido')?.invalid && formulario.get('apellido')?.touched"
+    />
+    @if (formulario.get('apellido')?.errors && formulario.get('apellido')?.touched) {
+      <small class="text-danger d-block mt-1 fw-bold text-uppercase" style="font-size: 0.75">El apellido es obligatorio</small>
+    }
+  </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="edad" class="form-label text-uppercase fw-semibold small text-warning" style="letter-spacing: 1px;">Edad</label>
+    <input
+      name="edad"
+      type="number"
+      formControlName="edad"
+      class="form-control bg-white text-dark border-0 fw-medium"
+        [class.is-invalid]="formulario.get('edad')?.invalid && formulario.get('edad')?.touched"
+    />
+    @if (formulario.get('edad')?.errors && formulario.get('edad')?.touched) {
+      <div class="text-danger d-block mt-1 fw-bold text-uppercase" style="font-size: 0.75">
+      @if (formulario.get('edad')?.hasError('required')) {
+        <span>La edad es obligatoria</span>
+      }
+      @if (formulario.get('edad')?.hasError('min')) {
+        <span>Debes ser mayor de 18 años</span>
+      }
+      @if (formulario.get('edad')?.getError('max'); as MAX) {
+        <span>La edad máxima permitida es {{ MAX.max }}.</span>
+      }
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label text-uppercase fw-semibold small text-warning" style="letter-spacing: 1px;">Email</label>
+    <input
+      name="email"
+      type="email"
+      formControlName="email"
+      class="form-control bg-white text-dark border-0 fw-medium"
+      [class.is-invalid]="formulario.get('email')?.invalid && formulario.get('email')?.touched"
+    />
+    @if (formulario.get('email')?.errors && formulario.get('email')?.touched) {
+      <div class="text-danger d-block mt-1 fw-bold text-uppercase" style="font-size: 0.75">
+      @if (formulario.get('email')?.hasError('required')) {
+        <span>El Email es obligatorio</span>
+      }
+      @if (formulario.get('email')?.hasError('email')) {
+        <span>Formato de email inválido</span>
+      }
+      </div>
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="form-label text-uppercase fw-semibold small text-warning" style="letter-spacing: 1px;">Contraseña</label>
+    <input
+      name="password"
+      type="password"
+      formControlName="password"
+      class="form-control bg-white text-dark border-0 fw-medium"
+      [class.is-invalid]="formulario.get('password')?.invalid && formulario.get('password')?.touched"
+    />
+    @if (formulario.get('password')?.errors && formulario.get('password')?.touched) {
+      <div class="text-danger d-block mt-1 fw-bold text-uppercase" style="font-size: 0.75">
+      @if (formulario.get('password')?.hasError('required')) {
+        <span>La contraseña es obligatoria</span>
+      }
+      @if (formulario.get('password')?.getError('minlength'); as MIN) {
+        <span>Mínimo {{ MIN.requiredLength }} caracteres</span>
+      }
+      </div>
+    }
+  </div>
+
+  <button
+    type="submit"
+    [disabled]="!formulario.valid"
+    class="btn btn-outline-warning w-100 fw-bold text-uppercase py-2"
+    style="letter-spacing: 2px"
+  >
+    Registrarse
+  </button>
+</form>
+</div>
+</div>

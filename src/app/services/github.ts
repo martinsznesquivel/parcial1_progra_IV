@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
+import { GitHubUser } from "../models/models";
 
 @Injectable({
     providedIn: 'root',
@@ -9,7 +10,7 @@ export class Github {
     http = inject(HttpClient);
     usuario = 'martinsznesquivel';
     apiGithub = 'https://api.github.com/users/'
-    usuarioGithub = signal<any | null>(null)
+    usuarioGithub = signal<GitHubUser | null>(null)
 
     obtenerUsuarioGithub(){
         const peticion = this.http.get<any>(this.apiGithub + this.usuario)
