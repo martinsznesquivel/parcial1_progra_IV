@@ -1,0 +1,64 @@
+<div class="container text-center mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 card bg-black text-light border border-warning p-4 d-flex flex-column" style="min-height: 80vh;">
+      <h2 class="mb-2 text-warning fw-bold text-uppercase" style="letter-spacing: 2px;">Ahorcado Galáctico</h2>
+
+      <div class="mb-4">
+        <h5 class="text-secondary text-uppercase fw-semibold" style="letter-spacing: 1px;">
+          Intentos Restantes:
+          <span class="badge" [ngClass]="vidasRestantes() > 2 ? 'bg-success' : 'bg-danger'">
+            {{ vidasRestantes() }}
+          </span>
+        </h5>
+      </div>
+
+      <div class="my-3" style="position: relative; width: 100%; height: 350px; overflow: hidden; border: 2px #ffc107; border-radius: 8px;">
+        <img src="juegos/ahorcado/bespin.jpg" alt="fondo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border: 2px solid #ffc107; border-radius: 8px;">
+        <img [src]="'juegos/ahorcado/estado' + (6 - vidasRestantes()) + '.png'" alt="c3poahorcado"
+        style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 300px; z-index: 1;">
+      </div>
+
+      <div class="d-flex justify-content-center gap-3 my-5">
+        @for (letra of palabraOculta(); track $index) {
+          <span
+            class="fs-2 fw-bold border-bottom border-3 border-warning px-2 text-light"
+            style="min-width: 40px"
+          >
+            {{ letra }}
+          </span>
+        }
+      </div>
+      @if (juegoTerminado()) {
+        <div class="border rounded p-3 my-2" [ngClass]="gano() ? 'border-success text-success' : 'border-danger text-danger'">
+          <p>Tiempo: <strong class="text-warning">{{ calcularTiempoJuego() }} segundos</strong></p>
+          <p>Cantidad de letras seleccionadas: <strong class="text-warning"> {{ letrasSeleccionadas().length }}</strong></p>
+          <p>Puntaje: <strong class="text-warning">{{ calcularPuntaje() }}</strong></p>
+          @if (gano()) {
+            <h4 class="fw-bold text-uppercase">Felicidades! Ganaste</h4>
+          } @else {
+            <h4 class="fw-bold text-uppercase">Perdiste!</h4>
+            <p>
+              La palabra era: <strong class="text-warning text-uppercase">{{ palabraSecreta }}</strong>
+            </p>
+          }
+          <button class="btn btn-outline-warning fw-bold text-uppercase px-4" (click)="iniciarJuego()">
+            Jugar de nuevo
+          </button>
+        </div>
+      }
+
+      <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+        @for (letra of letrasAbecedario; track letra) {
+          <button
+            class="btn btn-outline-warning fw-bold text-center"
+            style="width: 45px; height: 45px"
+            [disabled]="juegoTerminado() || letrasSeleccionadas().includes(letra)"
+            (click)="seleccionarLetra(letra)"
+          >
+            {{ letra }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
