@@ -35,4 +35,14 @@ export class Resultados {
 
     if (error) throw error;
   }
+
+  async guardarPreguntados(aciertos: number){
+    const { error } = await this.supabase.from('partidas_preguntados').insert({
+      usuario: this.getNombreUsuario(),
+      aciertos: aciertos,
+      total_preguntas: 10
+    });
+
+    if (error) throw error;
+  }
 }
