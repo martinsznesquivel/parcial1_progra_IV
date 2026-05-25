@@ -1,0 +1,38 @@
+import { inject, Injectable } from '@angular/core';
+import { SupabaseService } from './supabase';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Resultados {
+  private supabase = inject(SupabaseService).getClient();
+  private authService = inject(AuthService);
+
+  private getNombreUsuario(): string {
+    const user = this.authService.usuarioActual();
+    return user?.user_metadata?.['nombre'] ?? user?.email ?? 'Anonimo';
+  }
+
+  async guardarAhorcado(puntaje: number, tiempo: number, letrasSeleccionadas: number, gano: boolean){
+    const { error } = await this.supabase.from('partidas_ahorcado').insert({
+      usuario: this.getNombreUsuario(),
+      puntaje,
+      tiempo,
+      letras_seleccionadas: letrasSeleccionadas,
+      gano
+    });
+
+    if (error) throw error;
+  }
+
+  async guardarMayorMenor(aciertos: number, tiempo: number) {
+    const { error } = await this.supabase.from('partidas_mayoromenor').insert({
+      usuario: this.getNombreUsuario(),
+      aciertos,
+      tiempo
+    });
+
+    if (error) throw error;
+  }
+}

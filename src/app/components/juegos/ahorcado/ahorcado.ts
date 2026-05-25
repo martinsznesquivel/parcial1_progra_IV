@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Resultados } from '../../../services/resultados';
 
 @Component({
   selector: 'app-ahorcado',
@@ -8,6 +9,8 @@ import { Component, computed, OnInit, signal } from '@angular/core';
   styleUrl: './ahorcado.css',
 })
 export class Ahorcado implements OnInit {
+  private resultados = inject(Resultados);
+
   palabras: string[] = ['TATOOINE', 'VADER', 'KENOBI', 'PLAGUEIS', 'SKYWALKER', 'KAMINO'];
 
   palabraSecreta: string = '';
@@ -67,23 +70,31 @@ export class Ahorcado implements OnInit {
     if (!this.palabraOculta().includes('_')) {
       this.gano.set(true);
       this.juegoTerminado.set(true);
-      this.tiempoFinal.set(Date.now());
     } else if (this.vidasRestantes() === 0) {
       this.gano.set(false);
       this.juegoTerminado.set(true);
+    } else {
+      return;
     }
     this.tiempoFinal.set(Date.now());
+
+    this.resultados.guardarAhorcado(
+      this.calcularPuntaje(),
+      this.calcularTiempoJuego(),
+      this.letrasSeleccionadas().length,
+      this.gano()
+    )
   }
 
   calcularTiempoJuego = computed(()=> {
     const inicio = this.tiempoInicio();
     const final = this.tiempoFinal();
     if (!inicio || !final) return 0;
-      return Math.floor((final - inicio) / 1000);
+      return Math.floor((final - inicio) / 1000); 
     });
 
     calcularPuntaje = computed(()=> {
-      if(!this.gano) return 0;
+      if(!this.gano()) return 0;
       const intentosFallados = 6 - this.vidasRestantes();
       const puntajeBase = 100 - (intentosFallados * 10);
       const bonus = this.vidasRestantes() * 5;
