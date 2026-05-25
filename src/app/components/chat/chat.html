@@ -1,0 +1,29 @@
+<div class="d-flex flex-column h-100">
+
+    <!-- acá los mensajes -->
+     <div class="flex-grow-1 overflow-auto p-3" style="max-height: 380px;">
+        @for (mensaje of mensajes(); track mensaje.id) {
+            <div class="mb-2 d-flex" [ngClass]="mensaje.usuario === nombreUsuario ? 'justify-content-end' : 'justify-content-start'">
+                <div class="p-2 rounded" style="max-width: 75%;"
+                [ngClass]="mensaje.usuario === nombreUsuario ?  'bg-warning text-dark' : 'bg-secondary text-light'">
+            @if (mensaje.usuario !== nombreUsuario) {
+                <small class="fw-bold d-block" style="font-size: 0.7rem;">{{ mensaje.usuario }}</small>
+            }
+            <span>{{ mensaje.contenido }}</span>
+            <small class="d-block text-end" style="font-size: 0.65rem; opacity: 0.7;">
+                {{ mensaje.created_at | date: 'HH:mm' }}
+            </small>
+          </div>
+        </div>
+        }
+     </div>
+
+     <div class="border-top border-warning p-2 d-flex gap-2">
+        <input type="text" class="form-control bg-dark text-light border-secondary"
+        placeholder="Escribi un mensaje"
+        [(ngModel)]="nuevoMensaje"
+        (keyup.enter)="enviarMensaje()"
+        />
+        <button class="btn btn-warning fw-bold" (click)="enviarMensaje()">➤</button>
+     </div>
+</div>

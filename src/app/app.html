@@ -81,3 +81,22 @@
       </div>
     </div>
   }
+@if (authService.usuarioActual()) {
+  <div style="position: fixed; bottom: 24px; right: 24px; z-index: 999;">
+
+    <!-- chat -->
+     @if (chatAbierto) {
+      <div style="width: 350px; height: 500px; margin-bottom: 12px;" class="card bg-black border border-warning shadow-lg d-flex flex-column">
+        <div class="card-header bg-black border-bottom border-warning d-flex justify-content-between align-items-center">
+          <span class="text-warning fw-bold text-uppercase" style="letter-spacing: 1px;">Chat global</span>
+        </div>
+        <app-chat class="flex-grow-1 overflow-hidden d-flex flex-column"></app-chat>
+      </div>
+     }
+
+     <!--boton para desplegar chat-->
+     <button class="btn btn-warning fw-bold rounded-circle shadow" style="width: 56px; height: 56px; font-size: 1.4rem;" (click)="chatAbierto = !chatAbierto">
+      💬
+     </button>
+  </div>
+}
