@@ -30,7 +30,7 @@
           <h5 class="card-title">Ahorcado</h5>
           <p>Adivina la palabra</p>
           @if (estaLogueado()){
-              <a routerLink="/" class="btn btn-outline-warning w-100">Jugar</a>
+              <a routerLink="/juegos/ahorcado" class="btn btn-outline-warning w-100">Jugar</a>
         } @else {
               <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
           }
@@ -45,7 +45,7 @@
           <h5 class="card-title">Mayor o Menor</h5>
           <p>¿Sabrás que personaje tiene mas o menos midiclorianos?</p>
           @if (estaLogueado()) {
-          <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
+          <a routerLink="/juegos/mayoromenor" class="btn btn-outline-warning w-100">Jugar</a>
           } @else {
             <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
           }

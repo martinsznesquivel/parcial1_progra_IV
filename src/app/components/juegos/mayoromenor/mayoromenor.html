@@ -1,0 +1,113 @@
+<div class="container text-center mt-5">
+  <div class="row justify-content-center">
+    <div
+      class="col-md-8 card bg-black text-light border border-warning p-4 d-flex flex-column"
+      style="min-height: 80vh"
+    >
+      <h2 class="mb-2 text-warning fw-bold text-uppercase" style="letter-spacing: 2px">
+        Mayor o menor
+      </h2>
+
+      <div class="mb-3">
+        <h5 class="text-secondary text-uppercase fw-semibold" style="letter-spacing: 1px">
+          Aciertos: <span class="text-warning fw-bold"> {{ aciertos() }}</span>
+        </h5>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center gap-5 my-4">
+        <div class="d-flex flex-column align-items-center gap-2">
+          <small class="text-secondary text-uppercase" style="letter-spacing: 1px"
+            >Carta actual</small
+          >
+          <img
+            [src]="getUrlCarta(cartaActual()!)"
+            alt="carta-actual"
+            style="height: 220px; border-radius: 8px"
+          />
+        </div>
+
+        <div class="d-flex flex-column align-items-center gap-2">
+          <small class="text-secondary text-uppercase" style="letter-spacing: 1px"
+            >¿Mayor o Menor?</small
+          >
+          @if (juegoTerminado()) {
+            <img
+              [src]="getUrlCarta(cartaSiguiente()!)"
+              alt="carta-siguiente"
+              style="height: 220px; border-radius: 8px"
+            />
+          } @else {
+            <img
+              src="https://raw.githubusercontent.com/mcmd/playingcards.io-spanish.playing.cards/master/img/reverso.png"
+              alt="dorso"
+              style="height: 220px; border-radius: 8px"
+            />
+          }
+        </div>
+      </div>
+
+      @if (resultado()) {
+        <div class="mb-3">
+          @if (resultado() === 'correcto') {
+            <span class="text-success fw-bold text-uppercase" style="letter-spacing: 1px"
+              >Correcto</span
+            >
+          } @else {
+            <span class="text-danger fw-bold text-uppercase" style="letter-spacing: 1px"
+              >Incorrecto</span
+            >
+          }
+        </div>
+      }
+
+      @if (!juegoTerminado()) {
+        <div class="d-flex justify-content-center gap-4 my-3">
+          <button
+            class="btn btn-outline-warning fw-bold text-uppercase px-5 py-3"
+            style="letter-spacing: 2px; font-size: 1.2rem"
+            (click)="elegir('mayor')"
+          >
+            Mayor
+          </button>
+          <button
+            class="btn btn-outline-warning fw-bold text-uppercase px-5 py-3"
+            style="letter-spacing: 2px; font-size: 1.2rem"
+            (click)="elegir('menor')"
+          >
+            Menor
+          </button>
+        </div>
+      }
+
+      @if (juegoTerminado()) {
+        <div
+          class="border rounded p-3 my-2"
+          [ngClass]="
+            resultado() === 'incorrecto'
+              ? 'border-danger text-danger'
+              : 'border-success text-success'
+          "
+        >
+          @if (resultado() === 'correcto') {
+            <h4 class="fw-bold text-uppercase">¡Completaste la baraja!</h4>
+          } @else {
+            <h4 class="fw-bold text-uppercase">¡Te equivocaste!</h4>
+          }
+          <p>
+            Aciertos: <strong class="text-warning">{{ aciertos() }}</strong>
+          </p>
+          <p>
+            Tiempo: <strong class="text-warning">{{ tiempoDeJuego() }} segundos</strong>
+          </p>
+          <button
+            class="btn btn-outline-warning fw-bold text-uppercase px-4"
+            style="letter-spacing: 1px"
+            (click)="iniciarJuego()"
+          >
+            Jugar de nuevo
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

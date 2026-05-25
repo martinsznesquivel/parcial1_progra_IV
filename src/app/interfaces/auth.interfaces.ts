@@ -8,3 +8,8 @@ export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface Carta {
+  numero: number;
+  palo: string;
+}
