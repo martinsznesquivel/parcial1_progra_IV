@@ -1,25 +1,22 @@
 <div class="min-vh-100 py-4" style="background: #000">
-  @if (service.faseJuego() === 'SELECCION') {
+  
+  @if (juego.faseJuego() === 'SELECCION') {
     <div class="container">
       <h2 class="text-warning fw-bold text-uppercase text-center mb-2" style="font-size: 1rem">
-        Conquista Galactica
+        Conquista Galáctica
       </h2>
 
       <div class="text-center mb-4">
-        <span
-          class="badge border border-warning text-warning px-3 py-2 fw-bold"
-          style="letter-spacing: 1px"
-        >
-          Presupuesto Restante: {{ service.presupuestoRestante() }} / {{ service.presupuestoTotal }}
+        <span class="badge border border-warning text-warning px-3 py-2 fw-bold" style="letter-spacing: 1px">
+          Presupuesto Restante: {{ juego.presupuestoRestante() }} / {{ juego.presupuestoTotal }}
         </span>
       </div>
 
-      <!--Acá van los planetas-->
       <h5 class="text-secondary text-uppercase fw-semibold mb-3" style="letter-spacing: 2px">
-        Seleccioná al objetivo:
+        1. Seleccioná al objetivo:
       </h5>
       <div class="row justify-content-center mb-5">
-        @for (planeta of service.planetas(); track planeta.id) {
+        @for (planeta of juego.planetas(); track planeta.id) {
           <div class="col-md-4 text-center mb-4">
             @if (planeta.conquistado) {
               <div class="position-relative d-inline-block">
@@ -36,16 +33,14 @@
                   "
                 />
                 <div class="position-absolute top-50 start-50 translate-middle">
-                  <span class="text-success fw-bold text-uppercase" style="font-size: 0.8rem"
-                    >CONQUISTADO</span
-                  >
+                  <span class="text-success fw-bold text-uppercase" style="font-size: 0.8rem">CONQUISTADO</span>
                 </div>
               </div>
               <h5 class="text-success mt-2 fw-bold">{{ planeta.nombre }}</h5>
             } @else {
               <div
                 class="position-relative d-inline-block"
-                (click)="service.seleccionarPlaneta(planeta.id)"
+                (click)="juego.seleccionarPlaneta(planeta.id)"
                 style="cursor: pointer"
               >
                 <img
@@ -58,16 +53,12 @@
                     border-radius: 50%;
                     transition: 0.3s;
                   "
-                  [style.border]="
-                    planeta.seleccionado ? '4px solid #ffc107' : '4px solid transparent'
-                  "
+                  [style.border]="planeta.seleccionado ? '4px solid #ffc107' : '4px solid transparent'"
                   [style.boxShadow]="planeta.seleccionado ? '0 0 20px rgba(255,193,7,0.6)' : 'none'"
                 />
               </div>
               <h5 class="text-light mt-2 fw-bold">{{ planeta.nombre }}</h5>
-              <small class="text-secondary"
-                >HP: {{ planeta.hp }} | Def: {{ planeta.defensa }}%</small
-              >
+              <small class="text-secondary">HP: {{ planeta.hp }} | Def: {{ planeta.defensa }}%</small>
             }
           </div>
         }
@@ -77,24 +68,16 @@
         2. Armá tu escuadrón:
       </h5>
       <div class="row justify-content-center mb-4">
-        @for (nave of service.naves(); track nave.id) {
+        @for (nave of juego.naves(); track nave.id) {
           <div class="col-6 col-md-3 text-center mb-3">
             <div
-              (click)="service.seleccionarNave(nave.id)"
+              (click)="juego.seleccionarNave(nave.id)"
               style="cursor: pointer; padding: 12px; border-radius: 12px; transition: 0.3s"
-              [style.background]="
-                nave.seleccionada ? 'rgba(255,193,7,0.15)' : 'rgba(255,255,255,0.05)'
-              "
-              [style.border]="
-                nave.seleccionada ? '2px solid #ffc107' : '2px solid rgba(255,255,255,0.1)'
-              "
+              [style.background]="nave.seleccionada ? 'rgba(255,193,7,0.15)' : 'rgba(255,255,255,0.05)'"
+              [style.border]="nave.seleccionada ? '2px solid #ffc107' : '2px solid rgba(255,255,255,0.1)'"
               [style.opacity]="nave.vida <= 0 ? '0.3' : '1'"
             >
-              <img
-                [src]="nave.imagen"
-                [alt]="nave.nombre"
-                style="height: 80px; object-fit: contain"
-              />
+              <img [src]="nave.imagen" [alt]="nave.nombre" style="height: 80px; object-fit: contain" />
               <h6 class="text-light mt-2 mb-1 fw-bold">{{ nave.nombre }}</h6>
               <small class="text-secondary d-block">{{ nave.costo }} | {{ nave.ataqueBase }}</small>
               <small class="text-secondary d-block">{{ nave.vida }} | {{ nave.vidaMax }}</small>
@@ -104,11 +87,11 @@
       </div>
 
       <div class="text-center">
-        @if (service.puedeJugar()) {
+        @if (juego.puedeJugar()) {
           <button
             class="btn btn-warning fw-bold text-uppercase px-5 py-2"
             style="letter-spacing: 2px"
-            (click)="service.iniciarCombate()"
+            (click)="juego.iniciarCombate()"
           >
             Iniciar ataque
           </button>
@@ -116,7 +99,7 @@
           <p class="text-danger fw-bold text-uppercase">No tenés suficiente presupuesto</p>
           <button
             class="btn btn-outline-danger fw-bold text-uppercase px-5 py-2"
-            (click)="rendirse()"
+            (click)="juego.finalizarPartida(false)"
           >
             Rendirse
           </button>
@@ -125,43 +108,43 @@
     </div>
   }
 
-  @if (service.faseJuego() === 'COMBATE') {
+  @if (juego.faseJuego() === 'COMBATE') {
     <div class="container text-center text-white">
-      <!--aca va el planeta objetivo-->
-      <div class="mb-4">
-        <img
-          [src]="'juegos/conquista/' + planetaSeleccionado!.nombre.toLowerCase() + '.png'"
-          [alt]="planetaSeleccionado?.nombre"
-          style="
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #dc3545;
-            box-shadow: 0 0 30px rgba(220, 53, 69, 0.5);
-          "
-        />
-        <h3 class="text-warning fw-bold mt-3 text-uppercase" style="letter-spacing: 2px">
-          {{ planetaSeleccionado?.nombre }}
-        </h3>
-        <p class="text-secondary">
-          HP: <strong class="text-light">{{ planetaSeleccionado?.hp }}</strong> /
-          {{ planetaSeleccionado?.hpMax }}
-        </p>
-        <div class="progress mx-auto" style="max-width: 400px; height: 10px">
-          <div
-            class="progress-bar bg-danger"
-            [style.width.%]="(planetaSeleccionado!.hp / planetaSeleccionado!.hpMax) * 100"
-          ></div>
+      
+      @if (juego.planetaSeleccionado(); as planeta) {
+        <div class="mb-4">
+          <img
+            [src]="'juegos/conquista/' + planeta.nombre.toLowerCase() + '.png'"
+            [alt]="planeta.nombre"
+            style="
+              width: 200px;
+              height: 200px;
+              object-fit: cover;
+              border-radius: 50%;
+              border: 3px solid #dc3545;
+              box-shadow: 0 0 30px rgba(220, 53, 69, 0.5);
+            "
+          />
+          <h3 class="text-warning fw-bold mt-3 text-uppercase" style="letter-spacing: 2px">
+            {{ planeta.nombre }}
+          </h3>
+          <p class="text-secondary">
+            HP: <strong class="text-light">{{ planeta.hp }}</strong> / {{ planeta.hpMax }}
+          </p>
+          <div class="progress mx-auto" style="max-width: 400px; height: 10px">
+            <div
+              class="progress-bar bg-danger"
+              [style.width.%]="(planeta.hp / planeta.hpMax) * 100"
+            ></div>
+          </div>
         </div>
-      </div>
+      }
 
-      <!-- Naves -->
       <h5 class="text-secondary text-uppercase fw-semibold mb-3" style="letter-spacing: 2px">
         Tu Escuadrón:
       </h5>
       <div class="row justify-content-center">
-        @for (nave of navesVivas; track nave.id) {
+        @for (nave of juego.navesVivas(); track nave.id) {
           <div class="col-6 col-md-3 text-center mb-3">
             <div
               style="
@@ -171,20 +154,14 @@
                 padding: 12px;
               "
             >
-              <img
-                [src]="nave.imagen"
-                [alt]="nave.nombre"
-                style="height: 80px; object-fit: contain"
-              />
+              <img [src]="nave.imagen" [alt]="nave.nombre" style="height: 80px; object-fit: contain" />
               <h6 class="text-light mt-2 mb-1 fw-bold">{{ nave.nombre }}</h6>
-              <small class="text-secondary d-block mb-2"
-                >❤ {{ nave.vida }}/{{ nave.vidaMax }}</small
-              >
+              <small class="text-secondary d-block mb-2">{{ nave.vida }}/{{ nave.vidaMax }}</small>
               <button
                 class="btn btn-outline-warning btn-sm fw-bold text-uppercase"
                 style="letter-spacing: 1px"
                 [disabled]="nave.vida <= 0"
-                (click)="ejecutarAtaque(nave)"
+                (click)="juego.atacarPlaneta(nave.id)"
               >
                 ⚡ Atacar
               </button>
@@ -195,7 +172,7 @@
     </div>
   }
 
-  @if (service.faseJuego() === 'VICTORIA') {
+  @if (juego.faseJuego() === 'VICTORIA') {
     <div class="text-center text-white mt-5">
       <h1 class="display-1 text-warning fw-bold text-uppercase" style="letter-spacing: 3px">
         ¡Galaxia Conquistada!
@@ -204,14 +181,14 @@
       <button
         class="btn btn-outline-warning fw-bold text-uppercase px-5 mt-3"
         style="letter-spacing: 2px"
-        (click)="reiniciarJuego()"
+        (click)="juego.reiniciarJuego()"
       >
         Nueva Campaña
       </button>
     </div>
   }
 
-  @if (service.faseJuego() === 'DERROTA') {
+  @if (juego.faseJuego() === 'DERROTA') {
     <div class="text-center text-white mt-5">
       <h1 class="display-1 text-danger fw-bold text-uppercase" style="letter-spacing: 3px">
         ¡Misión Fallida!
@@ -220,7 +197,7 @@
       <button
         class="btn btn-outline-warning fw-bold text-uppercase px-5 mt-3"
         style="letter-spacing: 2px"
-        (click)="reiniciarJuego()"
+        (click)="juego.reiniciarJuego()"
       >
         Volver al Hangar
       </button>

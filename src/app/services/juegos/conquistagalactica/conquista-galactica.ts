@@ -1,6 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { Nave, Planeta } from '../models/juego.models';
-import { Resultados } from './resultados';
+import { Nave, Planeta } from '../../../models/juego.models';
+import { Resultados } from '../../resultados';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class ConquistaGalactica {
     {
       id: 3,
       nombre: 'Bombardero',
-      imagen : 'juegos/conquista/bombardero.png',
+      imagen: 'juegos/conquista/bombardero.png',
       costo: 7,
       ataqueBase: 25,
       vida: 80,
@@ -93,9 +93,27 @@ export class ConquistaGalactica {
     },
   ]);
 
-  //signal computada que evalua si los planetas del array fueron conquistados
+  //signals computadas para manejar estados
+
   victoriaTotal = computed(() => this.planetas().every((p) => p.conquistado));
 
+  puedeJugar = computed(() => {
+    return this.naves().some((n) => n.vida > 0 && n.costo <= this.presupuestoRestante());
+  });
+
+  navesSeleccionadas = computed(() => {
+    return this.naves().filter((n) => n.seleccionada);
+  });
+
+  planetaSeleccionado = computed(() => {
+    return this.planetas().find((p) => p.seleccionado);
+  });
+
+  navesVivas = computed(() => {
+    return this.naves().filter((n) => n.seleccionada && n.vida > 0);
+  });
+
+  // Metodos
 
   //alterna el estado de las naves "seleccionada" evaluando el presupuseto disponible.
   //Si se selecciona, descuenta el costo. Si se deselecciona, reintegra el costo al presupuesto
@@ -137,9 +155,11 @@ export class ConquistaGalactica {
 
     if (hayPlaneta && hayNaves) {
       this.faseJuego.set('COMBATE');
-    } else if (hayPlaneta && !hayNaves){
-      const puedeComprarAlgo = this.naves().some(n => n.vida > 0 && n.costo <= this.presupuestoRestante());
-      if (!puedeComprarAlgo){
+    } else if (hayPlaneta && !hayNaves) {
+      const puedeComprarAlgo = this.naves().some(
+        (n) => n.vida > 0 && n.costo <= this.presupuestoRestante(),
+      );
+      if (!puedeComprarAlgo) {
         this.finalizarPartida(false);
       }
     }
@@ -152,30 +172,33 @@ export class ConquistaGalactica {
     const planeta = this.planetas().find((p) => p.seleccionado);
 
     if (!nave || !planeta || !nave.seleccionada || nave.vida <= 0) return;
-  
+
     const probabilidad = Math.random() * 100;
-    
+
     //Si el numero aleatorio es mayor que la defensa del planeta, el ataque falla y la nave recibe daño
     if (probabilidad < planeta.defensa) {
       //El planeta repele el ataque
-      this.naves.update((lista) => lista.map((n) =>
-          n.id === naveId ? { ...n, vida: Math.max(0, n.vida - nave.ataqueBase / 2) } : n
-      ));
+      this.naves.update((lista) =>
+        lista.map((n) =>
+          n.id === naveId ? { ...n, vida: Math.max(0, n.vida - nave.ataqueBase / 2) } : n,
+        ),
+      );
     } else {
       // si el ataque tiene exito, el planeta recibe daño igual al ataque base de la nave
-      this.planetas.update((planetas) => planetas.map((p) =>
-          p.seleccionado ? { ...p, hp: Math.max(0, p.hp - nave.ataqueBase) } : p
-        ));
+      this.planetas.update((planetas) =>
+        planetas.map((p) =>
+          p.seleccionado ? { ...p, hp: Math.max(0, p.hp - nave.ataqueBase) } : p,
+        ),
+      );
     }
 
-    const navesActualizadas = this.naves();
     const planetaActualizado = this.planetas().find((p) => p.seleccionado);
 
     if (planetaActualizado && planetaActualizado.hp <= 0) {
       //si el planeta queda sin hp marcamos el planeta como conquistado
-      this.planetas.update((lista) => lista.map((p) =>
-        p.seleccionado ? { ...p, conquistado: true, seleccionado: false } : p,
-      ));
+      this.planetas.update((lista) =>
+        lista.map((p) => (p.seleccionado ? { ...p, conquistado: true, seleccionado: false } : p)),
+      );
 
       if (this.victoriaTotal()) {
         await this.finalizarPartida(true);
@@ -188,16 +211,16 @@ export class ConquistaGalactica {
     //Verificar derrota si las naves seleccionadas murieron
     const navesVivas = this.naves().filter((n) => n.seleccionada && n.vida > 0);
     if (navesVivas.length === 0) {
-      this.naves.update(lista => lista.map(nave => 
-        nave.vida <= 0 ? {...nave, seleccionada: false } : nave
-      ));
+      this.naves.update((lista) =>
+        lista.map((nave) => (nave.vida <= 0 ? { ...nave, seleccionada: false } : nave)),
+      );
 
       //Chequea gameover total (todas las naves fueron destruidas)
-      const navesDisponibles = this.naves().filter(n => n.vida > 0);
-      if(navesDisponibles.length === 0){
+      const navesDisponibles = this.naves().filter((n) => n.vida > 0);
+      if (navesDisponibles.length === 0) {
         await this.finalizarPartida(false);
       } else {
-        this.faseJuego.set('SELECCION')
+        this.faseJuego.set('SELECCION');
       }
     }
   }
@@ -212,7 +235,26 @@ export class ConquistaGalactica {
     );
   }
 
-  puedeJugar = computed(() => {
-  return this.naves().some(n => n.vida > 0 && n.costo <= this.presupuestoRestante());
-});
+  //restaura el estado del juego a sus valores por defecto
+  //revive naves, planetas, devuelve presupuesto inicial y manda al jugador a la fase de seleccion
+  reiniciarJuego() {
+    this.naves.update((lista) =>
+      lista.map((nave) => ({
+        ...nave,
+        vida: nave.vidaMax,
+        seleccionada: false,
+        isCooldown: false,
+      })),
+    );
+    this.planetas.update((lista) =>
+      lista.map((planeta) => ({
+        ...planeta,
+        hp: planeta.hpMax,
+        conquistado: false,
+        seleccionado: false,
+      })),
+    );
+    this.presupuestoRestante.set(this.presupuestoTotal);
+    this.faseJuego.set('SELECCION');
+  }
 }

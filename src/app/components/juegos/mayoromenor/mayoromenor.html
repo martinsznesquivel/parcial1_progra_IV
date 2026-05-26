@@ -10,7 +10,7 @@
 
       <div class="mb-3">
         <h5 class="text-secondary text-uppercase fw-semibold" style="letter-spacing: 1px">
-          Aciertos: <span class="text-warning fw-bold"> {{ aciertos() }}</span>
+          Aciertos: <span class="text-warning fw-bold"> {{ juego.aciertos() }}</span>
         </h5>
       </div>
 
@@ -20,7 +20,7 @@
             >Carta actual</small
           >
           <img
-            [src]="getUrlCarta(cartaActual()!)"
+            [src]="juego.getUrlCarta(juego.cartaActual()!)"
             alt="carta-actual"
             style="height: 260px; width: 170px; object-fit: cover; border-radius: 12px; border: 3px solid rgba(255, 193, 7, 0.4)"
           />
@@ -30,9 +30,9 @@
           <small class="text-secondary text-uppercase" style="letter-spacing: 1px"
             >¿Mayor o Menor?</small
           >
-          @if (juegoTerminado()) {
+          @if (juego.juegoTerminado()) {
             <img
-              [src]="getUrlCarta(cartaSiguiente()!)"
+              [src]="juego.getUrlCarta(juego.cartaSiguiente()!)"
               alt="carta-siguiente"
               style="height: 260px; width: 170px; object-fit: cover; border-radius: 12px; border: 3px solid rgba(0, 123, 255, 0.4)"
             />
@@ -46,9 +46,9 @@
         </div>
       </div>
 
-      @if (resultado()) {
+      @if (juego.resultado()) {
         <div class="mb-3">
-          @if (resultado() === 'correcto') {
+          @if (juego.resultado() === 'correcto') {
             <span class="text-success fw-bold text-uppercase" style="letter-spacing: 1px"
               >Correcto</span
             >
@@ -60,49 +60,49 @@
         </div>
       }
 
-      @if (!juegoTerminado()) {
+      @if (!juego.juegoTerminado()) {
         <div class="d-flex justify-content-center gap-4 my-3">
           <button
             class="btn btn-outline-warning fw-bold text-uppercase px-5 py-3"
             style="letter-spacing: 2px; font-size: 1.2rem"
-            (click)="elegir('mayor')"
+            (click)="juego.elegir('mayor')"
           >
             Mayor
           </button>
           <button
             class="btn btn-outline-warning fw-bold text-uppercase px-5 py-3"
             style="letter-spacing: 2px; font-size: 1.2rem"
-            (click)="elegir('menor')"
+            (click)="juego.elegir('menor')"
           >
             Menor
           </button>
         </div>
       }
 
-      @if (juegoTerminado()) {
+      @if (juego.juegoTerminado()) {
         <div
           class="border rounded p-3 my-2"
           [ngClass]="
-            resultado() === 'incorrecto'
+            juego.resultado() === 'incorrecto'
               ? 'border-danger text-danger'
               : 'border-success text-success'
           "
         >
-          @if (resultado() === 'correcto') {
+          @if (juego.resultado() === 'correcto') {
             <h4 class="fw-bold text-uppercase">¡Completaste la baraja!</h4>
           } @else {
             <h4 class="fw-bold text-uppercase">¡Te equivocaste!</h4>
           }
           <p>
-            Aciertos: <strong class="text-warning">{{ aciertos() }}</strong>
+            Aciertos: <strong class="text-warning">{{ juego.aciertos() }}</strong>
           </p>
           <p>
-            Tiempo: <strong class="text-warning">{{ tiempoDeJuego() }} segundos</strong>
+            Tiempo: <strong class="text-warning">{{ juego.tiempoDeJuego() }} segundos</strong>
           </p>
           <button
             class="btn btn-outline-warning fw-bold text-uppercase px-4"
             style="letter-spacing: 1px"
-            (click)="iniciarJuego()"
+            (click)="juego.iniciarJuego()"
           >
             Jugar de nuevo
           </button>
