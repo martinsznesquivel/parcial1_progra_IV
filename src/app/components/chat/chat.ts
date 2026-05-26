@@ -21,6 +21,7 @@ export class Chat implements OnInit, OnDestroy {
   private supabase = inject(SupabaseService).getClient();
   private authService = inject(AuthService);
 
+  //estado reactivo que almacena la lista completa de mensajes a mostrar
   mensajes = signal<Mensaje[]>([]);
   nombreUsuario = '';
   nuevoMensaje = '';
@@ -33,12 +34,15 @@ export class Chat implements OnInit, OnDestroy {
     this.escucharMensajes();
   }
 
+  //Limpia la suscripcion al canal de supabase cuando el usuario sale de la vista del chat
+  //evita fugas de memoria y consumo innecesario de conexiones
   ngOnDestroy() {
     if (this.canal){
       this.supabase.removeChannel(this.canal);
     }
   }
 
+  //Consulta a la tabla 'mensajes' y trae el historial ordenado de mensajes mas antiguo a mas reciente
   async cargarMensajes(){
     const { data, error } = await this.supabase.from('mensajes').select('*').order('created_at', {ascending: true});
 
@@ -47,6 +51,8 @@ export class Chat implements OnInit, OnDestroy {
     }
   }
 
+  //con supabase realtime se suscribe a los eventos insert de la tabla mensajes
+  //cuando un usuario envia un mensaje, actualiza la signal agregandolo al array
   escucharMensajes(){
     this.canal = this.supabase
     .channel('mensajes')
@@ -58,6 +64,8 @@ export class Chat implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  //inserta un nuevo mensaje en la base de datos
+  //realtime ya detecta el insert y actualiza la signal
   async enviarMensaje(){
     if (!this.nuevoMensaje.trim()) return;
 

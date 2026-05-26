@@ -30,6 +30,7 @@ export class Mayoromenor implements OnInit{
     this.iniciarJuego();
   }
 
+  //genera una nueva baraja, mezcla y resetea los estados reactivos para comenzar la partida de cero
   iniciarJuego(){
     this.baraja = this.mezclar(this.generarBaraja());
     this.indice.set(0);
@@ -42,6 +43,7 @@ export class Mayoromenor implements OnInit{
     this.cartaSiguiente.set(this.baraja[1]);
   }
 
+  //crea una baraja de 48 cartas y 4 palos (12 cartas por palo)
   generarBaraja(): Carta[]{
     const cartas: Carta[] = [];
     for(const palo of this.palos){
@@ -52,14 +54,18 @@ export class Mayoromenor implements OnInit{
     return cartas;
   }
 
+  //desordena el array de forma aleatoria y crea una copia previa para mantener inmutabilidad
   mezclar(cartas: Carta[]): Carta[] {
     return[...cartas].sort(()=> Math.random() - 0.5);
   }
 
+  //construye url para obtener la imagen de un repositorio externo. Padstart sirve para forzar el formato de dos digitos y poder traer las cartas sin problemas.
   getUrlCarta(carta : Carta): string {
     return `https://raw.githubusercontent.com/mcmd/playingcards.io-spanish.playing.cards/master/img/${carta.numero.toString().padStart(2, '0')}-${carta.palo}.png`;
   }
 
+  //compara el valor de la carta actual con la siguiente según la predicción del usuario.
+  //si acierta pasa a la siguiente carta. Si falla o se queda sin cartas, termina la partida y guarda los resultados.
   elegir(eleccion: 'mayor' | 'menor') {
     if (this.juegoTerminado() || !this.cartaActual() || !this.cartaSiguiente()) return;
 
@@ -84,6 +90,7 @@ export class Mayoromenor implements OnInit{
     const nuevoIndice = this.indice() + 1;
     this.indice.set(nuevoIndice);
 
+    //chequeo de victoria por agotar la baraja
     if(nuevoIndice + 1 >= this.baraja.length){
       this.tiempoFinal.set(Date.now());
       this.juegoTerminado.set(true);
@@ -95,6 +102,7 @@ export class Mayoromenor implements OnInit{
     this.cartaSiguiente.set(this.baraja[nuevoIndice + 1]);
   }
 
+  //signal computada que calcula la duración de la partida en segundos
   tiempoDeJuego = computed(()=> {
     const inicio = this.tiempoInicio();
     const final = this.tiempoFinal();

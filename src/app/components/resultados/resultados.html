@@ -1,0 +1,140 @@
+<div class="container py-5">
+  <h2 class="text-warning fw-bold text-uppercase text-center mb-5" style="letter-spacing: 3px;">
+    Resultados
+  </h2>
+
+  <!-- parte del ahorcado -->
+  <div class="card bg-black border border-warning shadow-lg mb-5">
+    <div class="card-header border-bottom border-warning py-3 text-center">
+      <h4 class="text-warning fw-bold text-uppercase mb-0" style="letter-spacing: 2px;">Ahorcado galactico</h4>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-dark table-hover mb-0">
+        <thead class="border-bottom border-warning">
+          <tr>
+            <th class="text-warning">#</th>
+            <th class="text-warning">usuario</th>
+            <th class="text-warning">puntaje</th>
+            <th class="text-warning">tiempo</th>
+            <th class="text-warning">letras usadas</th>
+            <th class="text-warning">resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (partida of ahorcado(); track partida.id) {
+            <tr>
+              <td class="text-secondary">{{ $index + 1 }}</td>
+              <td class="text-light fw-bold">{{ partida.usuario }}</td>
+              <td class="text-warning fw-bold">{{ partida.puntaje }}</td>
+              <td class="text-secondary">{{ partida.tiempo }}s</td>
+              <td class="text-secondary">{{ partida.letras_seleccionadas }}</td>
+              <td>
+                @if (partida.gano) {
+                  <span class="badge bg-success">ganó</span>
+                } @else {
+                  <span class="badge bg-danger">perdió</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- parte del mayor o Menor -->
+  <div class="card bg-black border border-warning shadow-lg mb-5">
+    <div class="card-header border-bottom border-warning py-3 text-center">
+      <h4 class="text-warning fw-bold text-uppercase mb-0" style="letter-spacing: 2px;">Mayor o Menor</h4>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-dark table-hover mb-0">
+        <thead class="border-bottom border-warning">
+          <tr>
+            <th class="text-warning">#</th>
+            <th class="text-warning">Usuario</th>
+            <th class="text-warning">Aciertos</th>
+            <th class="text-warning">Tiempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (partida of mayorMenor(); track partida.id) {
+            <tr>
+              <td class="text-secondary">{{ $index + 1 }}</td>
+              <td class="text-light fw-bold">{{ partida.usuario }}</td>
+              <td class="text-warning fw-bold">{{ partida.aciertos }}</td>
+              <td class="text-secondary">{{ partida.tiempo }}s</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- parte del preguntados -->
+  <div class="card bg-black border border-warning shadow-lg mb-5">
+    <div class="card-header border-bottom border-warning py-3 text-center">
+      <h4 class="text-warning fw-bold text-uppercase mb-0" style="letter-spacing: 2px;">preguntados</h4>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-dark table-hover mb-0">
+        <thead class="border-bottom border-warning">
+          <tr>
+            <th class="text-warning">#</th>
+            <th class="text-warning">Usuario</th>
+            <th class="text-warning">Aciertos</th>
+            <th class="text-warning">Total preguntas</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (partida of preguntados(); track partida.id) {
+            <tr>
+              <td class="text-secondary">{{ $index + 1 }}</td>
+              <td class="text-light fw-bold">{{ partida.usuario }}</td>
+              <td class="text-warning fw-bold">{{ partida.aciertos }}</td>
+              <td class="text-secondary">{{ partida.total_preguntas }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- parte de la conquista galactica -->
+  <div class="card bg-black border border-warning shadow-lg mb-5">
+    <div class="card-header border-bottom border-warning py-3 text-center">
+      <h4 class="text-warning fw-bold text-uppercase mb-0" style="letter-spacing: 2px;">conquista galactica</h4>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-dark table-hover mb-0">
+        <thead class="border-bottom border-warning">
+          <tr>
+            <th class="text-warning">#</th>
+            <th class="text-warning">Usuario</th>
+            <th class="text-warning">Planetas conquistados</th>
+            <th class="text-warning">Presupuesto final</th>
+            <th class="text-warning">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (partida of conquista(); track partida.id) {
+            <tr>
+              <td class="text-secondary">{{ $index + 1 }}</td>
+              <td class="text-light fw-bold">{{ partida.usuario }}</td>
+              <td class="text-warning fw-bold">{{ partida.planetas_conquistados }}</td>
+              <td class="text-secondary">{{ partida.presupuesto_final }}</td>
+              <td>
+                @if (partida.gano) {
+                  <span class="badge bg-success">ganó</span>
+                } @else {
+                  <span class="badge bg-danger">perdió</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
