@@ -8,6 +8,7 @@ import { logueadoGuard } from './guards/logueado-guard';
 import { Mayoromenor } from './components/juegos/mayoromenor/mayoromenor';
 import { Preguntados } from './components/juegos/preguntados/preguntados';
 import { ConquistaGalacticaComponent } from './components/juegos/conquista-galactica/conquista-galactica';
+import { Resultados } from './components/resultados/resultados';
 
 export const routes: Routes = [
     {path: 'bienvenida', component: Bienvenida},
@@ -18,7 +19,7 @@ export const routes: Routes = [
     {path: 'juegos/mayoromenor', component: Mayoromenor},
     {path: 'juegos/preguntados', component: Preguntados},
     {path: 'juegos/conquista', component: ConquistaGalacticaComponent},
-    
+    {path: 'resultados', component: Resultados},
     // auth guard lo usaría cuando empiece con el chat y los juegos
     {path: '**', redirectTo: '/bienvenida', pathMatch: 'full'}
 ];

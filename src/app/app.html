@@ -1,11 +1,7 @@
 <nav class="nav-principal border-bottom border-warning bg-dark p-3">
   <div class="container d-flex justify-content-between align-items-center">
     <a class="navbar-logo text-warning text-decoration-none fw-bold fs-4" routerLink="/bienvenida">
-      <img src="/favicon.png"
-           alt="logo"
-           width="50"
-           height="50"
-           class="me-2">
+      <img src="/favicon.png" alt="logo" width="50" height="50" class="me-2" />
       Star Arcade
     </a>
 
@@ -43,6 +39,15 @@
           >¿QUIEN SOY?</a
         >
       </li>
+      <li class="nav-item">
+        <a
+          class="nav-link text-light"
+          routerLink="/resultados"
+          routerLinkActive="text-warning fw-bold"
+          >RESULTADOS</a
+        >
+      </li>
+
       @if (authService.usuarioActual()) {
         <li class="nav-item d-flex align-items-center">
           <span class="text-warning me-3 fw-bold">
@@ -62,41 +67,63 @@
   <router-outlet></router-outlet>
 </main>
 
-  @if (modalService.mostrar()) {
-    <div class="modal show" style="display: block; background: rgba(0, 0, 0, 0.6);" tabindex="-1" >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-danger border border-danger shadow-lg">
-          <div class="modal-header border-bottom-0">
-            <h5 class="modal-title fw-bold text-uppercase" style="letter-spacing: 2px;">{{ modalService.titulo() }}</h5>
-            <button type="button" class="btn-close btn-close-white" (click)="modalService.cerrar()"></button>
-          </div>
-          <div class="modal-body text-light">
-            <p class="mb-0">{{ modalService.mensaje() }}</p>
-          </div>
+@if (modalService.mostrar()) {
+  <div class="modal show" style="display: block; background: rgba(0, 0, 0, 0.6)" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-danger border border-danger shadow-lg">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title fw-bold text-uppercase" style="letter-spacing: 2px">
+            {{ modalService.titulo() }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            (click)="modalService.cerrar()"
+          ></button>
+        </div>
+        <div class="modal-body text-light">
+          <p class="mb-0">{{ modalService.mensaje() }}</p>
+        </div>
 
-          <div class="modal-footer border-top-0">
-            <button type="button" class="btn btn-outline-danger w-100 fw-bold text-uppercase" (click)="modalService.cerrar()">Cerrar</button>
-          </div>
+        <div class="modal-footer border-top-0">
+          <button
+            type="button"
+            class="btn btn-outline-danger w-100 fw-bold text-uppercase"
+            (click)="modalService.cerrar()"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
-  }
+  </div>
+}
 @if (authService.usuarioActual()) {
-  <div style="position: fixed; bottom: 24px; right: 24px; z-index: 999;">
-
+  <div style="position: fixed; bottom: 24px; right: 24px; z-index: 999">
     <!-- chat -->
-     @if (chatAbierto) {
-      <div style="width: 350px; height: 500px; margin-bottom: 12px;" class="card bg-black border border-warning shadow-lg d-flex flex-column">
-        <div class="card-header bg-black border-bottom border-warning d-flex justify-content-between align-items-center">
-          <span class="text-warning fw-bold text-uppercase" style="letter-spacing: 1px;">Chat global</span>
+    @if (chatAbierto) {
+      <div
+        style="width: 350px; height: 500px; margin-bottom: 12px"
+        class="card bg-black border border-warning shadow-lg d-flex flex-column"
+      >
+        <div
+          class="card-header bg-black border-bottom border-warning d-flex justify-content-between align-items-center"
+        >
+          <span class="text-warning fw-bold text-uppercase" style="letter-spacing: 1px"
+            >Chat global</span
+          >
         </div>
         <app-chat class="flex-grow-1 overflow-hidden d-flex flex-column"></app-chat>
       </div>
-     }
+    }
 
-     <!--boton para desplegar chat-->
-     <button class="btn btn-warning fw-bold rounded-circle shadow" style="width: 56px; height: 56px; font-size: 1.4rem;" (click)="chatAbierto = !chatAbierto">
+    <!--boton para desplegar chat-->
+    <button
+      class="btn btn-warning fw-bold rounded-circle shadow"
+      style="width: 56px; height: 56px; font-size: 1.4rem"
+      (click)="chatAbierto = !chatAbierto"
+    >
       💬
-     </button>
+    </button>
   </div>
 }
