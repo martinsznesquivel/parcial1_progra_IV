@@ -43,7 +43,7 @@
         <img src="/juegos/mayoromenor.jpeg" alt="" />
         <div class="card-body d-flex flex-column justify-content-between">
           <h5 class="card-title">Mayor o Menor</h5>
-          <p>¿Sabrás que personaje tiene mas o menos midiclorianos?</p>
+          <p>¿Podrás vencer a Lando con cartas españolas?</p>
           @if (estaLogueado()) {
           <a routerLink="/juegos/mayoromenor" class="btn btn-outline-warning w-100">Jugar</a>
           } @else {
@@ -58,7 +58,7 @@
         <img src="/juegos/preguntados.jpg" alt="" />
         <div class="card-body d-flex flex-column justify-content-between">
           <h5 class="card-title">Preguntados</h5>
-          <p>¿Cuanto sabés de Star Wars?</p>
+          <p>¿Cuanto sabés de videojuegos?</p>
           @if (estaLogueado()) {
           <a routerLink="/juegos/preguntados" class="btn btn-outline-warning w-100">Jugar</a>
           } @else {
@@ -72,10 +72,10 @@
       <div class="card h-100 bg-dark text-light border-secondary" [class.opacity-50]="!estaLogueado()"> 
         <img src="/juegos/starinvaders.png" alt="" />
         <div class="card-body d-flex flex-column justify-content-between">
-          <h5 class="card-title">Stars Invaders</h5>
-          <p>Defendé a la galaxia del Imperio Galactico</p>
+          <h5 class="card-title">Conquista Galactica</h5>
+          <p>Conquista la galaxia</p>
           @if (estaLogueado()) {
-          <a routerLink="" class="btn btn-outline-warning w-100">Jugar</a>
+          <a routerLink="/juegos/conquista" class="btn btn-outline-warning w-100">Jugar</a>
           } @else {
             <a routerLink="/login" class="btn btn-sm btn-outline-secondary w-100 text-uppercase small">Bloqueado</a>
           }
