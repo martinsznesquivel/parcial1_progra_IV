@@ -45,4 +45,16 @@ export class Resultados {
 
     if (error) throw error;
   }
+
+  async guardarConquista(planetasConquistados: number, presupuestoFinal: number, victoria: boolean){
+    const { error } = await this.supabase.from('partidas_conquista').insert({
+      usuario: this.getNombreUsuario(),
+      planetas_conquistados: planetasConquistados,
+      presupuesto_final: presupuestoFinal,
+      gano: victoria,
+      fecha: new Date().toISOString()
+    });
+
+    if (error) throw error;
+  }
 }
