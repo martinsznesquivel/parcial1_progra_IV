@@ -25,6 +25,7 @@ export class Preguntados implements OnInit {
   cargando = signal(true);
   juegoTerminado = signal(false);
 
+  //signal computada que devuelve la pregunta actual en base al indice. Se actualiza cuando el jugador pasa de ronda
   preguntaActual = computed(() => {
     const lista = this.preguntas();
     const indice = this.indiceActual();
@@ -35,6 +36,7 @@ export class Preguntados implements OnInit {
     await this.prepararJuego();
   }
 
+  //inicia el juego. Resetea estados, consume la api y mapea resultados. Mezcla las respuestas 
   async prepararJuego() {
     try {
       this.cargando.set(true);
@@ -64,6 +66,8 @@ export class Preguntados implements OnInit {
     }
   }
 
+  // Evalua la opcion escogida por el usuario. Si es correcta, suma un acierto y pasa al siguiente indice o finaliza el juego si respondió las 10 preguntas
+  // Guarda el resultado final
   async elegirOpcion(opcionSeleccionada: string) {
     if (this.juegoTerminado() || this.cargando()) return;
 
@@ -75,6 +79,7 @@ export class Preguntados implements OnInit {
 
     const siguienteIndice = this.indiceActual() + 1;
 
+    //Controla que la partida finalice despues de 10 preguntas
     if (siguienteIndice >= 10) {
       this.juegoTerminado.set(true);
 

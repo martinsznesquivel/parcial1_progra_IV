@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject} from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
+//mapea la estructura que devuelve la api de opentdb para una pregunta
 export interface PreguntaTrivia{
   category: string;
   type: string;
@@ -21,8 +22,10 @@ export interface RespuestaTrivia{
 })
 export class Trivia {
   private http = inject(HttpClient);
+  //trae 10 preguntas,
   private url =  'https://opentdb.com/api.php?amount=10&category=15&difficulty=medium&type=multiple';
 
+  //realiza peticion get a la api. firstValueFrom hace de traductor, async await funciona con promesas y http.get devuelve observables, entonces toma el primer valor del observable, cierra la conexion y devuelve una promise
   async obtenerPreguntas(): Promise<RespuestaTrivia> {
     return firstValueFrom(this.http.get<RespuestaTrivia>(this.url));
   }

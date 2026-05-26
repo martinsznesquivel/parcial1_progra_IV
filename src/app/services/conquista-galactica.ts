@@ -93,8 +93,12 @@ export class ConquistaGalactica {
     },
   ]);
 
+  //signal computada que evalua si los planetas del array fueron conquistados
   victoriaTotal = computed(() => this.planetas().every((p) => p.conquistado));
 
+
+  //alterna el estado de las naves "seleccionada" evaluando el presupuseto disponible.
+  //Si se selecciona, descuenta el costo. Si se deselecciona, reintegra el costo al presupuesto
   seleccionarNave(naveId: number) {
     this.naves.update((lista) =>
       lista.map((nave) => {
@@ -114,6 +118,7 @@ export class ConquistaGalactica {
     );
   }
 
+  //marca un planeta como el objetivo actual. Solo puede haber un planeta seleccionado a la vez
   seleccionarPlaneta(planetaId: number) {
     this.planetas.update((lista) =>
       lista.map((planeta) => ({
@@ -123,6 +128,9 @@ export class ConquistaGalactica {
     );
   }
 
+  //Valida que haya un objetivo y flota seleccionada antes de cambiar de fase
+  //Si no hay naves seleccionadas, evalua si el jugador tiene suficientes fondos para comprar
+  //Si no tiene presupuesto suficiente, pierde y salta la pantalla de derrota
   iniciarCombate() {
     const hayPlaneta = this.planetas().some((p) => p.seleccionado);
     const hayNaves = this.naves().some((n) => n.seleccionada);
@@ -137,6 +145,8 @@ export class ConquistaGalactica {
     }
   }
 
+  //calcula el exito del ataque basado en la estadistica de defensa del planeta versus un roll aletorio por rng.
+  //gestiona daño infligido o recibido y evalua condiciones post ataque (si se conquistó el planeta, si se destruyó la flota o la victoria total)
   async atacarPlaneta(naveId: number) {
     const nave = this.naves().find((n) => n.id === naveId);
     const planeta = this.planetas().find((p) => p.seleccionado);
@@ -145,14 +155,14 @@ export class ConquistaGalactica {
   
     const probabilidad = Math.random() * 100;
     
-    //Para hacer daño
+    //Si el numero aleatorio es mayor que la defensa del planeta, el ataque falla y la nave recibe daño
     if (probabilidad < planeta.defensa) {
       //El planeta repele el ataque
       this.naves.update((lista) => lista.map((n) =>
           n.id === naveId ? { ...n, vida: Math.max(0, n.vida - nave.ataqueBase / 2) } : n
       ));
     } else {
-      // si el ataque es exitoso
+      // si el ataque tiene exito, el planeta recibe daño igual al ataque base de la nave
       this.planetas.update((planetas) => planetas.map((p) =>
           p.seleccionado ? { ...p, hp: Math.max(0, p.hp - nave.ataqueBase) } : p
         ));
@@ -162,7 +172,7 @@ export class ConquistaGalactica {
     const planetaActualizado = this.planetas().find((p) => p.seleccionado);
 
     if (planetaActualizado && planetaActualizado.hp <= 0) {
-      //Marcamos el planeta como conquistado
+      //si el planeta queda sin hp marcamos el planeta como conquistado
       this.planetas.update((lista) => lista.map((p) =>
         p.seleccionado ? { ...p, conquistado: true, seleccionado: false } : p,
       ));
@@ -170,19 +180,19 @@ export class ConquistaGalactica {
       if (this.victoriaTotal()) {
         await this.finalizarPartida(true);
       } else {
-        this.faseJuego.set('SELECCION');
+        this.faseJuego.set('SELECCION'); //vuelve a la pantalla de seleccion para el siguiente planeta
       }
       return;
-      //Volvemos a la pantalla de seleccion
     }
 
-    //Verificar derrota si el planeta no cayó
+    //Verificar derrota si las naves seleccionadas murieron
     const navesVivas = this.naves().filter((n) => n.seleccionada && n.vida > 0);
     if (navesVivas.length === 0) {
       this.naves.update(lista => lista.map(nave => 
         nave.vida <= 0 ? {...nave, seleccionada: false } : nave
       ));
 
+      //Chequea gameover total (todas las naves fueron destruidas)
       const navesDisponibles = this.naves().filter(n => n.vida > 0);
       if(navesDisponibles.length === 0){
         await this.finalizarPartida(false);
@@ -192,6 +202,7 @@ export class ConquistaGalactica {
     }
   }
 
+  //termina el juego, establece la vista final y envia parametros de rendimiento a la base de datos a traves del service Resultados
   async finalizarPartida(victoria: boolean) {
     this.faseJuego.set(victoria ? 'VICTORIA' : 'DERROTA');
     await this.resultados.guardarConquista(

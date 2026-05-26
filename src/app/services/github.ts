@@ -11,7 +11,10 @@ export class Github {
     usuario = 'martinsznesquivel';
     apiGithub = 'https://api.github.com/users/'
     usuarioGithub = signal<GitHubUser | null>(null)
+    //Signal que almacena los datos del usuario de github. Se inicializa en null hasta que se resuelva la peticion http
 
+    //Realiza una peticion get a la api de github para obtener los datos del perfil
+    //Cuando recibe una respuesta actualiza la signal de usuarioGithub
     obtenerUsuarioGithub(){
         const peticion = this.http.get<any>(this.apiGithub + this.usuario)
 
@@ -19,7 +22,7 @@ export class Github {
             if(data){
                 this.usuarioGithub.set(data);
             }
-
+            //Nos desuscribimos manualmente por si acaso
             suscripcion.unsubscribe();
         })
     }
